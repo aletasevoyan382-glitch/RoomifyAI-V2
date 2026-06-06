@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomify AI 2.0 - Ինտերիեր Դիզայնի Ապագան</title>
+    <title>Roomify Ai - Ինտերիեր Դիզայնի Ապագան</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,348 +13,93 @@
             --glass: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--dark);
-            color: white;
-            overflow-x: hidden;
-        }
-
-        /* Glassmorphism Background */
-        .bg-blobs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 20% 30%, #4338ca 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #7e22ce 0%, transparent 40%);
-            filter: blur(80px);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Sections */
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 80px 0;
-        }
-
-        /* Hero */
-        .hero {
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
-        }
-
-        /* Features */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px);
-        }
-
-        .card i {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        /* Auth Form */
-        .auth-container {
-            max-width: 450px;
-            margin: 0 auto;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 40px;
-            border-radius: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: white;
-            outline: none;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary);
-        }
-
-        /* Editor UI */
-        #app-view {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark);
-            z-index: 1000;
-        }
-
-        .editor-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            height: 100vh;
-        }
-
-        .sidebar {
-            background: var(--glass);
-            border-right: 1px solid var(--glass-border);
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .canvas-area {
-            position: relative;
-            background: #1e293b;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #editor-canvas {
-            background: white;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            cursor: crosshair;
-        }
-
-        .furniture-item {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.2s;
-        }
-
-        .furniture-item:hover {
-            background: var(--primary);
-        }
-
-        /* Upload UI */
-        .upload-zone {
-            border: 2px dashed var(--glass-border);
-            padding: 60px;
-            border-radius: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .upload-zone:hover {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 30px;
-            border-radius: 10px;
-            background: var(--primary);
-            color: white;
-            z-index: 2000;
-            display: none;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100px); }
-            to { transform: translateY(0); }
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--dark); color: white; overflow-x: hidden; }
+        .bg-blobs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 20% 30%, #4338ca 0%, transparent 40%), radial-gradient(circle at 80% 70%, #7e22ce 0%, transparent 40%); filter: blur(80px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 0; }
+        .hero { text-align: center; }
+        .hero h1 { font-size: 4rem; margin-bottom: 20px; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.2rem; opacity: 0.8; max-width: 600px; margin: 0 auto 40px; }
+        .btn { padding: 15px 40px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .btn-primary { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+        .card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); padding: 40px; border-radius: 20px; text-align: center; transition: 0.3s; }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .auth-container { max-width: 450px; margin: 0 auto; background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); padding: 40px; border-radius: 30px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; opacity: 0.7; }
+        .input-group input { width: 100%; padding: 12px 20px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border); border-radius: 12px; color: white; outline: none; }
+        #app-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 1000; }
+        .editor-layout { display: grid; grid-template-columns: 250px 1fr; height: 100vh; }
+        .sidebar { background: var(--glass); border-right: 1px solid var(--glass-border); padding: 20px; overflow-y: auto; }
+        .canvas-area { position: relative; background: #1e293b; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        #editor-canvas { background: white; box-shadow: 0 0 50px rgba(0,0,0,0.5); cursor: crosshair; }
+        .furniture-item { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 10px; cursor: pointer; text-align: center; transition: 0.2s; }
+        .furniture-item:hover { background: var(--primary); }
+        .upload-zone { border: 2px dashed var(--glass-border); padding: 60px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .toast { position: fixed; bottom: 20px; right: 20px; padding: 15px 30px; border-radius: 10px; background: var(--primary); color: white; z-index: 2000; display: none; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <div class="bg-blobs"></div>
-
     <main id="marketing-view">
-        <!-- Hero Section -->
         <section id="hero" class="hero container">
-            <h1>Roomify AI 2.0</h1>
+            <h1>Roomify Ai</h1>
             <p>Ձեր երազանքի սենյակի դիզայնը՝ վայրկյանների ընթացքում: Օգտագործեք արհեստական բանականությունը՝ սենյակը սկանավորելու և կահավորելու համար:</p>
-            <div>
-                <a href="#features" class="btn btn-primary">Իմանալ Ավելին</a>
-            </div>
+            <a href="#features" class="btn btn-primary">Իմանալ Ավելին</a>
         </section>
-
-        <!-- Features Section -->
         <section id="features" class="container">
             <h2 style="text-align: center; font-size: 2.5rem;">Մեր Հնարավորությունները</h2>
             <div class="features-grid">
-                <div class="card">
-                    <i>🔍</i>
-                    <h3>AI Սկանավորում</h3>
-                    <p>Վերբեռնեք սենյակի նկարը, և մեր համակարգը ավտոմատ կճանաչի պատերը:</p>
-                </div>
-                <div class="card">
-                    <i>🛋️</i>
-                    <h3>2D Խմբագրիչ</h3>
-                    <p>Տեղադրեք կահույքը, փոխեք չափսերը և պտտեք դրանք 360 աստիճան:</p>
-                </div>
-                <div class="card">
-                    <i>🎨</i>
-                    <h3>Ժամանակակից Ոճ</h3>
-                    <p>Ընտրեք հարյուրավոր նորաձև կահույքի տեսակներից ձեր ճաշակով:</p>
-                </div>
+                <div class="card"><i>🔍</i><h3>AI Սկանավորում</h3><p>Վերբեռնեք սենյակի նկարը, և մեր համակարգը ավտոմատ կճանաչի պատերը:</p></div>
+                <div class="card"><i>🛋️</i><h3>2D/3D Խմբագրիչ</h3><p>Տեղադրեք կահույքը և տեսեք սենյակը տարբեր տեսանկյուններից:</p></div>
+                <div class="card"><i>🎨</i><h3>Ժամանակակից Ոճ</h3><p>Ընտրեք հարյուրավոր նորաձև կահույքի տեսակներից ձեր ճաշակով:</p></div>
             </div>
-            <div style="text-align: center; margin-top: 50px;">
-                <a href="#auth" class="btn btn-primary">Սկսել Հիմա</a>
-            </div>
+            <div style="text-align: center; margin-top: 50px;"><a href="#auth" class="btn btn-primary">Սկսել Հիմա</a></div>
         </section>
-
-        <!-- Auth Section -->
         <section id="auth" class="container">
             <div class="auth-container">
                 <h2 style="text-align: center; margin-bottom: 30px;">Գրանցում</h2>
                 <form id="register-form">
-                    <div class="input-group">
-                        <label>Անուն</label>
-                        <input type="text" id="reg-name" placeholder="Ձեր անունը" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Էլ. հասցե</label>
-                        <input type="email" id="reg-email" placeholder="example@mail.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Գաղտնաբառ</label>
-                        <input type="password" id="reg-password" placeholder="••••••••" required>
-                    </div>
+                    <div class="input-group"><label>Անուն</label><input type="text" id="reg-name" placeholder="Ձեր անունը" required></div>
+                    <div class="input-group"><label>Էլ. հասցե</label><input type="email" id="reg-email" placeholder="example@mail.com" required></div>
+                    <div class="input-group"><label>Գաղտնաբառ</label><input type="password" id="reg-password" placeholder="••••••••" required></div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Ստեղծել Հաշիվ</button>
                 </form>
             </div>
         </section>
     </main>
-
-    <!-- App View (Hidden by default) -->
     <div id="app-view">
         <div id="step-upload" class="container" style="height: 100vh; display: flex; flex-direction: column; justify-content: center;">
             <h2 style="text-align: center; margin-bottom: 30px;">Քայլ 1: Վերբեռնեք Սենյակի Նկարը</h2>
-            <div class="upload-zone" id="drop-zone">
-                <div style="font-size: 3rem; margin-bottom: 10px;">📸</div>
-                <p>Քաշեք և գցեք նկարը այստեղ կամ սեղմեք՝ ընտրելու համար</p>
-                <input type="file" id="file-input" class="hidden" accept="image/*">
-            </div>
+            <div class="upload-zone" id="drop-zone"><div>📸</div><p>Քաշեք և գցեք նկարը այստեղ կամ սեղմեք՝ ընտրելու համար</p><input type="file" id="file-input" class="hidden" accept="image/*"></div>
             <p id="upload-status" style="text-align: center; margin-top: 20px; color: var(--primary);"></p>
         </div>
-
         <div id="step-editor" class="editor-layout hidden">
             <div class="sidebar">
                 <h3>Կահույք</h3>
-                <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Ընտրեք տարրը՝ ավելացնելու համար</p>
-                
                 <div class="furniture-item" onclick="addFurniture('bed')">🛏️ Մահճակալ</div>
                 <div class="furniture-item" onclick="addFurniture('sofa')">🛋️ Բազմոց</div>
                 <div class="furniture-item" onclick="addFurniture('table')">🪑 Սեղան</div>
                 <div class="furniture-item" onclick="addFurniture('tv')">📺 Հեռուստացույց</div>
                 <div class="furniture-item" onclick="addFurniture('plant')">🪴 Բույս</div>
-
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" style="flex: 1; padding: 10px;" onclick="setMode('2d')">2D</button>
+                    <button class="btn btn-primary" style="flex: 1; padding: 10px; background: linear-gradient(45deg, #10b981, #3b82f6);" onclick="setMode('3d')">3D</button>
+                </div>
                 <div style="margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
                     <p style="font-size: 0.8rem;">Կառավարում.</p>
-                    <p style="font-size: 0.7rem; opacity: 0.6;">• Սեղմեք կահույքի վրա՝ ընտրելու համար<br>• R - պտտել<br>• + / - չափսը<br>• Delete - ջնջել</p>
+                    <p style="font-size: 0.7rem; opacity: 0.6;">• R - պտտել | + / - չափս | Delete - ջնջել</p>
                     <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="location.reload()">Ելք</button>
                 </div>
             </div>
-            <div class="canvas-area">
-                <div id="canvas-container" style="position: relative;">
-                    <svg id="editor-canvas" width="800" height="600"></svg>
-                </div>
-            </div>
+            <div class="canvas-area"><div id="canvas-container"><svg id="editor-canvas" width="800" height="600"></svg></div></div>
         </div>
     </div>
-
     <div id="toast" class="toast"></div>
-
     <script src="/static/js/app.js"></script>
 </body>
 </html>
