@@ -3,105 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomify Ai - Pro Suite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Roomify Ai - Pro Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; --canvas-2d: #ffffff; --canvas-3d: #1a1a1a; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--dark); color: white; overflow: hidden; }
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
 
-        /* Auth Screen */
-        .full-screen { position: fixed; inset: 0; background: var(--dark); display: flex; align-items: center; justify-content: center; z-index: 3000; }
-        .card { background: #1e293b; padding: 40px; border-radius: 24px; width: 100%; max-width: 400px; text-align: center; border: 1px solid #334155; }
-        .input-group { text-align: left; margin-bottom: 15px; }
-        .input-group input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; margin-top: 5px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
 
-        /* Dashboard */
-        .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; width: 90%; }
-        .module-card { background: #1e293b; padding: 40px; border-radius: 20px; cursor: pointer; border: 1px solid #334155; transition: 0.3s; text-align: center; }
-        .module-card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        body {
+            background-color: var(--dark);
+            color: white;
+            overflow-x: hidden;
+        }
 
-        /* Editor Layout */
-        .editor-layout { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
-        .sidebar { background: #1e293b; border-right: 1px solid #334155; padding: 20px; overflow-y: auto; }
-        .category-title { font-size: 0.75rem; text-transform: uppercase; color: #64748b; margin: 20px 0 10px; font-weight: 800; }
-        .furniture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .item-card { background: #334155; padding: 10px; border-radius: 12px; cursor: pointer; text-align: center; font-size: 0.7rem; }
-        .item-card img { width: 100%; height: 50px; object-fit: contain; margin-bottom: 5px; filter: brightness(1.1); }
+        /* Glassmorphism Background */
+        .bg-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, #4338ca 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #7e22ce 0%, transparent 40%);
+            filter: blur(80px);
+        }
 
-        /* Canvas Area */
-        .canvas-area { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #e2e8f0; transition: 0.5s; }
-        #editor-canvas { background: white; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 50px rgba(0,0,0,0.2); }
-        
-        .mode-switch { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; background: white; padding: 5px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 1000; }
-        .mode-btn { padding: 8px 25px; border-radius: 30px; border: none; cursor: pointer; font-weight: 700; color: #64748b; }
-        .mode-btn.active { background: var(--primary); color: white; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-        #scan-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 4000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 0;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+        }
+
+        .card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Auth Form */
+        .auth-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Editor UI */
+        #app-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 1000;
+        }
+
+        .editor-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--glass);
+            border-right: 1px solid var(--glass-border);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .canvas-area {
+            position: relative;
+            background: #1e293b;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #editor-canvas {
+            background: white;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            cursor: crosshair;
+        }
+
+        .furniture-item {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .furniture-item:hover {
+            background: var(--primary);
+        }
+
+        /* Upload UI */
+        .upload-zone {
+            border: 2px dashed var(--glass-border);
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            z-index: 2000;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); }
+            to { transform: translateY(0); }
+        }
+
         .hidden { display: none !important; }
-        .btn-pro { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
+    <div class="bg-blobs"></div>
 
-    <!-- Registration -->
-    <div id="auth-view" class="full-screen">
-        <div class="card">
-            <h1 style="margin-bottom: 20px;">Roomify Ai</h1>
-            <form onsubmit="event.preventDefault(); showDashboard();">
-                <div class="input-group"><label>Էլ. հասցե</label><input type="email" required></div>
-                <div class="input-group"><label>Գաղտնաբառ</label><input type="password" required></div>
-                <button type="submit" class="btn-pro">Մուտք գործել</button>
-            </form>
+    <main id="marketing-view">
+        <!-- Hero Section -->
+        <section id="hero" class="hero container">
+            <h1>Roomify AI 2.0</h1>
+            <p>Ձեր երազանքի սենյակի դիզայնը՝ վայրկյանների ընթացքում: Օգտագործեք արհեստական բանականությունը՝ սենյակը սկանավորելու և կահավորելու համար:</p>
+            <div>
+                <a href="#features" class="btn btn-primary">Իմանալ Ավելին</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="container">
+            <h2 style="text-align: center; font-size: 2.5rem;">Մեր Հնարավորությունները</h2>
+            <div class="features-grid">
+                <div class="card">
+                    <i>🔍</i>
+                    <h3>AI Սկանավորում</h3>
+                    <p>Վերբեռնեք սենյակի նկարը, և մեր համակարգը ավտոմատ կճանաչի պատերը:</p>
+                </div>
+                <div class="card">
+                    <i>🛋️</i>
+                    <h3>2D Խմբագրիչ</h3>
+                    <p>Տեղադրեք կահույքը, փոխեք չափսերը և պտտեք դրանք 360 աստիճան:</p>
+                </div>
+                <div class="card">
+                    <i>🎨</i>
+                    <h3>Ժամանակակից Ոճ</h3>
+                    <p>Ընտրեք հարյուրավոր նորաձև կահույքի տեսակներից ձեր ճաշակով:</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#auth" class="btn btn-primary">Սկսել Հիմա</a>
+            </div>
+        </section>
+
+        <!-- Auth Section -->
+        <section id="auth" class="container">
+            <div class="auth-container">
+                <h2 style="text-align: center; margin-bottom: 30px;">Գրանցում</h2>
+                <form id="register-form">
+                    <div class="input-group">
+                        <label>Անուն</label>
+                        <input type="text" id="reg-name" placeholder="Ձեր անունը" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Էլ. հասցե</label>
+                        <input type="email" id="reg-email" placeholder="example@mail.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Գաղտնաբառ</label>
+                        <input type="password" id="reg-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Ստեղծել Հաշիվ</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- App View (Hidden by default) -->
+    <div id="app-view">
+        <div id="step-upload" class="container" style="height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+            <h2 style="text-align: center; margin-bottom: 30px;">Քայլ 1: Վերբեռնեք Սենյակի Նկարը</h2>
+            <div class="upload-zone" id="drop-zone">
+                <div style="font-size: 3rem; margin-bottom: 10px;">📸</div>
+                <p>Քաշեք և գցեք նկարը այստեղ կամ սեղմեք՝ ընտրելու համար</p>
+                <input type="file" id="file-input" class="hidden" accept="image/*">
+            </div>
+            <p id="upload-status" style="text-align: center; margin-top: 20px; color: var(--primary);"></p>
         </div>
-    </div>
 
-    <!-- Dashboard -->
-    <div id="dashboard-view" class="full-screen hidden">
-        <div class="module-grid">
-            <div class="module-card" onclick="openModule('2d')"><h2>📐</h2><h3>2D Drafting</h3><p>Ճարտարապետական պլան</p></div>
-            <div class="module-card" onclick="openModule('3d')"><h2>🏠</h2><h3>3D Realistic</h3><p>Ծավալային մոդելավորում</p></div>
-            <div class="module-card" onclick="openScanner()"><h2>🤖</h2><h3>AI Scanning</h3><p>Լուսանկարից՝ 2D պլան</p></div>
-        </div>
-    </div>
-
-    <!-- AI Scan Modal -->
-    <div id="scan-overlay">
-        <h2>Վերբեռնեք սենյակի լուսանկարը</h2>
-        <input type="file" id="ai-input" style="margin: 20px 0; color: white;">
-        <button class="btn-pro" style="width: 250px;" onclick="handleScan()">Սկսել AI Սկանավորումը</button>
-        <button onclick="this.parentElement.style.display='none'" style="margin-top:20px; background:none; color:white; border:none; cursor:pointer;">Չեղարկել</button>
-    </div>
-
-    <!-- Main Editor -->
-    <div id="app-view" class="hidden">
-        <div class="editor-layout">
+        <div id="step-editor" class="editor-layout hidden">
             <div class="sidebar">
-                <h3 style="color: var(--primary); margin-bottom: 20px;">Roomify Ai Pro</h3>
+                <h3>Կահույք</h3>
+                <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Ընտրեք տարրը՝ ավելացնելու համար</p>
                 
-                <div class="category-title">Կահույք</div>
-                <div class="furniture-grid">
-                    <div class="item-card" onclick="addFurniture('bed')"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQusjLZs5ghmvnjUwW8VNnL9fZTkojXA_TEIw&s"><br>Մահճակալ</div>
-                    <div class="item-card" onclick="addFurniture('sofa')"><img src="https://img.icons8.com/ios-filled/100/ffffff/sofa.png"><br>Բազմոց</div>
-                    <div class="item-card" onclick="addFurniture('table')"><img src="https://img.icons8.com/ios-filled/100/ffffff/table.png"><br>Սեղան</div>
-                    <div class="item-card" onclick="addFurniture('plant')"><img src="https://img.icons8.com/ios-filled/100/ffffff/potted-plant.png"><br>Բույս</div>
+                <div class="furniture-item" onclick="addFurniture('bed')">🛏️ Մահճակալ</div>
+                <div class="furniture-item" onclick="addFurniture('sofa')"> couch Բազմոց</div>
+                <div class="furniture-item" onclick="addFurniture('table')">🪑 Սեղան</div>
+                <div class="furniture-item" onclick="addFurniture('tv')">📺 Հեռուստացույց</div>
+                <div class="furniture-item" onclick="addFurniture('plant')">🪴 Բույս</div>
+
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" style="flex: 1; padding: 10px;" onclick="setMode('2d')">2D</button>
+                    <button class="btn btn-primary" style="flex: 1; padding: 10px; background: linear-gradient(45deg, #10b981, #3b82f6);" onclick="setMode('3d')">3D</button>
                 </div>
 
-                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #334155;">
-                    <button class="btn-pro" style="background: #334155;" onclick="location.reload()">Վերադառնալ</button>
+                <div style="margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+
+                    <p style="font-size: 0.8rem;">Կառավարում.</p>
+                    <p style="font-size: 0.7rem; opacity: 0.6;">• Սեղմեք կահույքի վրա՝ ընտրելու համար<br>• R - պտտել<br>• + / - չափսը<br>• Delete - ջնջել</p>
+                    <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="location.reload()">Ելք</button>
                 </div>
             </div>
-
-            <div class="canvas-area" id="bg-area">
-                <div class="mode-switch">
-                    <button id="btn-2d" class="mode-btn active" onclick="setMode('2d')">2D View</button>
-                    <button id="btn-3d" class="mode-btn" onclick="setMode('3d')">3D Real</button>
+            <div class="canvas-area">
+                <div id="canvas-container" style="position: relative; width: 800px; height: 600px;">
+                    <svg id="editor-canvas" width="800" height="600" style="position: absolute; top: 0; left: 0; z-index: 5;"></svg>
+                    <div id="three-container" class="hidden" style="position: absolute; top: 0; left: 0; width: 800px; height: 600px; z-index: 10;"></div>
                 </div>
-                <div id="canvas-container"><svg id="editor-canvas" width="1000" height="750"></svg></div>
             </div>
         </div>
     </div>
 
+    <div id="toast" class="toast"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
 </html>
